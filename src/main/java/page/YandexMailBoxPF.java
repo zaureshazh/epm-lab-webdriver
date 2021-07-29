@@ -8,6 +8,7 @@ import util.WaitUtil;
 
 public class YandexMailBoxPF {
     private static int WAIT_TIMEOUT = 10;
+    private WebDriver driver;
 
     @FindBy(xpath = "//a[@href='#compose']")
     private WebElement composeButton;
