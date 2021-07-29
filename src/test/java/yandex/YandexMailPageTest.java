@@ -3,6 +3,7 @@ package yandex;
 import config.DriverConfig;
 import org.openqa.selenium.WebDriver;
 import org.testng.Assert;
+import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 import page.YandexLoginPagePF;
@@ -44,7 +45,17 @@ public class YandexMailPageTest {
         Assert.assertTrue(yandexMailBoxPF.checkDraft(addressee, subject, body));
         yandexMailBoxPF.sendDraft()
                 .checkDraft(addressee, subject, body);
+    }
+
+    @Test
+    public void checkSentTest() {
+        checkDraftsTest();
         Assert.assertTrue(yandexMailBoxPF.checkSent(addressee, subject, body));
         yandexMailBoxPF.logout();
+    }
+
+    @AfterMethod(alwaysRun = true)
+    public void closeBrowser() {
+        driver.quit();
     }
 }
