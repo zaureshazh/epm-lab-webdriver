@@ -40,7 +40,7 @@ public class YandexMailBoxPF {
     @FindBy(xpath = "//span[@title='testtest']")
     private WebElement body;
 
-    @FindBy(xpath = "//button[@class='control button2 button2_view_default button2_tone_default button2_size_l button2_theme_normal button2_pin_circle-circle ComposeControlPanelButton-Button ComposeControlPanelButton-Button_sidePadding']")
+    @FindBy(xpath = "//div[@class='ComposeSendButton-Text']//ancestor::button")
     private WebElement sendEmailButton;
 
     @FindBy(xpath = "//a[@data-title='Sent']")
