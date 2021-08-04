@@ -51,7 +51,7 @@ public class YandexMailPageTest {
     public void checkSentTest() {
         checkDraftsTest();
         Assert.assertTrue(yandexMailBoxPF.checkSent(addressee, subject, body));
-        yandexMailBoxPF.logout();
+        yandexMailBoxPF.moveToTrash().logout();
     }
 
     @AfterMethod(alwaysRun = true)

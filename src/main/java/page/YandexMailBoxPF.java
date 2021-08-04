@@ -1,7 +1,9 @@
 package page;
 
+import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
 import util.WaitUtil;
@@ -52,6 +54,12 @@ public class YandexMailBoxPF {
     @FindBy(xpath = "//span[contains(text(),'Log out')]")
     private WebElement logoutOption;
 
+    @FindBy(xpath = "//div[@class='mail-MessageSnippet-Content']")
+    private WebElement email;
+
+    @FindBy(xpath = "//span[contains(text(), 'Trash')]")
+    private WebElement trashFolder;
+
     public YandexMailBoxPF(WebDriver driver) {
         this.driver = driver;
         PageFactory.initElements(driver, this);
@@ -64,7 +72,7 @@ public class YandexMailBoxPF {
         addresseeField.sendKeys(addressee);
         subjectField.sendKeys(subject);
         bodyField.sendKeys(body);
-        closeEmailButton.click();
+        ((JavascriptExecutor) driver).executeScript("arguments[0].click();", closeEmailButton);
         return this;
     }
 
@@ -76,6 +84,7 @@ public class YandexMailBoxPF {
     }
 
     public YandexMailBoxPF sendDraft() {
+        WaitUtil.waitForElementToBeVisible(firstDraft, WAIT_TIMEOUT);
         firstDraft.click();
         WaitUtil.waitForElementToBeVisible(sendEmailButton, WAIT_TIMEOUT);
         sendEmailButton.click();
@@ -87,6 +96,14 @@ public class YandexMailBoxPF {
         sentFolder.click();
         WaitUtil.waitForElementToBeVisible(addressee, WAIT_TIMEOUT);
         return addressee.getText().equals(addresseeTest) && subject.getText().equals(subjectTest) && body.getText().equals(bodyTest);
+    }
+
+    public YandexMailBoxPF moveToTrash() {
+        ((JavascriptExecutor)driver).executeScript("history.go(0)");
+        WaitUtil.waitForElementToBeVisible(email, WAIT_TIMEOUT);
+        WaitUtil.waitForElementToBeVisible(trashFolder, WAIT_TIMEOUT);
+        new Actions(driver).dragAndDrop(email, trashFolder).build().perform(); //fix
+        return this;
     }
 
     public void logout() {
