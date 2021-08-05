@@ -102,7 +102,7 @@ public class YandexMailBoxPF {
         ((JavascriptExecutor)driver).executeScript("history.go(0)");
         WaitUtil.waitForElementToBeVisible(email, WAIT_TIMEOUT);
         WaitUtil.waitForElementToBeVisible(trashFolder, WAIT_TIMEOUT);
-        new Actions(driver).dragAndDrop(email, trashFolder).build().perform(); //fix
+        new Actions(driver).dragAndDrop(email, trashFolder).build().perform();
         return this;
     }
 

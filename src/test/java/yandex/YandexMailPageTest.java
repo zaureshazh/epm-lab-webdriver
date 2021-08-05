@@ -1,5 +1,6 @@
 package yandex;
 
+import business_objects.EmailContent;
 import config.DriverConfig;
 import org.openqa.selenium.WebDriver;
 import org.testng.Assert;
@@ -13,10 +14,7 @@ public class YandexMailPageTest {
     private WebDriver driver;
     private YandexLoginPagePF yandexLoginPagePF;
     private YandexMailBoxPF yandexMailBoxPF;
-
-    private static final String addressee = "jan3doetest@yandex.com";
-    private static final String subject = "test";
-    private static final String body = "testtest";
+    private EmailContent emailContent = new EmailContent();
 
     @BeforeMethod(alwaysRun = true)
     public void setupBrowser() {
@@ -32,25 +30,22 @@ public class YandexMailPageTest {
         Assert.assertTrue(yandexLoginPagePF.checkIfLoggedIn());
     }
 
-    @Test
+    @Test(dependsOnMethods = "loginTest")
     public void createEmailTest() {
-        loginTest();
         yandexMailBoxPF = yandexLoginPagePF.openMailBox();
-        yandexMailBoxPF.composeEmail(addressee, subject, body);
+        yandexMailBoxPF.composeEmail(emailContent.getAddressee(), emailContent.getSubject(), emailContent.getBody());
     }
 
-    @Test
+    @Test(dependsOnMethods = "createEmailTest")
     public void checkDraftsTest() {
-        createEmailTest();
-        Assert.assertTrue(yandexMailBoxPF.checkDraft(addressee, subject, body));
+        Assert.assertTrue(yandexMailBoxPF.checkDraft(emailContent.getAddressee(), emailContent.getSubject(), emailContent.getBody()));
         yandexMailBoxPF.sendDraft()
-                .checkDraft(addressee, subject, body);
+                .checkDraft(emailContent.getAddressee(), emailContent.getSubject(), emailContent.getBody());
     }
 
-    @Test
+    @Test(dependsOnMethods = "checkDraftsTest")
     public void checkSentTest() {
-        checkDraftsTest();
-        Assert.assertTrue(yandexMailBoxPF.checkSent(addressee, subject, body));
+        Assert.assertTrue(yandexMailBoxPF.checkSent(emailContent.getAddressee(), emailContent.getSubject(), emailContent.getBody()));
         yandexMailBoxPF.moveToTrash().logout();
     }
 
