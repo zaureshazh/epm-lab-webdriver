@@ -28,24 +28,24 @@ public class YandexMailPageTest {
         Assert.assertTrue(yandexLoginPagePF.checkIfLoggedIn());
     }
 
-    @Test
+    @Test(dependsOnMethods = "loginTest")
     public void createEmailTest() {
-        loginTest();
+//        loginTest();
         yandexMailBoxPF = yandexLoginPagePF.openMailBox();
         yandexMailBoxPF.composeEmail();
     }
 
-    @Test
+    @Test(dependsOnMethods = "createEmailTest")
     public void checkDraftsTest() {
-        createEmailTest();
+//        createEmailTest();
         Assert.assertTrue(yandexMailBoxPF.checkDraft());
         yandexMailBoxPF.sendDraft()
                 .checkDraft();
     }
 
-    @Test
+    @Test(dependsOnMethods = "checkDraftsTest")
     public void checkSentTest() {
-        checkDraftsTest();
+//        checkDraftsTest();
         Assert.assertTrue(yandexMailBoxPF.checkSent());
         yandexMailBoxPF.moveToTrash().logout();
     }
