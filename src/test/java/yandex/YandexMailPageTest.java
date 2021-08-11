@@ -1,6 +1,5 @@
 package yandex;
 
-import business_objects.EmailContent;
 import config.DriverConfig;
 import org.openqa.selenium.WebDriver;
 import org.testng.Assert;
@@ -14,7 +13,6 @@ public class YandexMailPageTest {
     private WebDriver driver;
     private YandexLoginPagePF yandexLoginPagePF;
     private YandexMailBoxPF yandexMailBoxPF;
-    private EmailContent emailContent = new EmailContent();
 
     @BeforeMethod(alwaysRun = true)
     public void setupBrowser() {
@@ -30,22 +28,25 @@ public class YandexMailPageTest {
         Assert.assertTrue(yandexLoginPagePF.checkIfLoggedIn());
     }
 
-    @Test(dependsOnMethods = "loginTest")
+    @Test
     public void createEmailTest() {
+        loginTest();
         yandexMailBoxPF = yandexLoginPagePF.openMailBox();
-        yandexMailBoxPF.composeEmail(emailContent.getAddressee(), emailContent.getSubject(), emailContent.getBody());
+        yandexMailBoxPF.composeEmail();
     }
 
-    @Test(dependsOnMethods = "createEmailTest")
+    @Test
     public void checkDraftsTest() {
-        Assert.assertTrue(yandexMailBoxPF.checkDraft(emailContent.getAddressee(), emailContent.getSubject(), emailContent.getBody()));
+        createEmailTest();
+        Assert.assertTrue(yandexMailBoxPF.checkDraft());
         yandexMailBoxPF.sendDraft()
-                .checkDraft(emailContent.getAddressee(), emailContent.getSubject(), emailContent.getBody());
+                .checkDraft();
     }
 
-    @Test(dependsOnMethods = "checkDraftsTest")
+    @Test
     public void checkSentTest() {
-        Assert.assertTrue(yandexMailBoxPF.checkSent(emailContent.getAddressee(), emailContent.getSubject(), emailContent.getBody()));
+        checkDraftsTest();
+        Assert.assertTrue(yandexMailBoxPF.checkSent());
         yandexMailBoxPF.moveToTrash().logout();
     }
 

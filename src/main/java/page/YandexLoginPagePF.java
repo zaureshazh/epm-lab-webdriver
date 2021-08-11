@@ -1,5 +1,6 @@
 package page;
 
+import business_objects.User;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
@@ -45,10 +46,10 @@ public class YandexLoginPagePF {
 
     public YandexLoginPagePF login() {
         WaitUtil.waitForElementToBeVisible(loginField, WAIT_TIMEOUT);
-        loginField.sendKeys("jan3doetest@yandex.com");
+        loginField.sendKeys(User.getLogin());
         loginButton.click();
         WaitUtil.waitForElementToBeVisible(passwordField, WAIT_TIMEOUT);
-        new Actions(driver).sendKeys(passwordField, "testaccount123").build().perform();
+        new Actions(driver).sendKeys(passwordField, User.getPassword()).build().perform();
         loginButton.click();
         return new YandexLoginPagePF(driver);
     }
