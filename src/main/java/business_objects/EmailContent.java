@@ -1,19 +1,47 @@
 package business_objects;
 
 public class EmailContent {
-    private static final String ADDRESSEE = "jan3doetest@yandex.com";
-    private static final String SUBJECT = "test";
-    private static final String BODY = "testtest";
+    private final String addressee;
+    private final String subject;
+    private final String body;
 
-    public static String getADDRESSEE() {
-        return ADDRESSEE;
+    private EmailContent(EmailContentBuilder builder) {
+        this.addressee = builder.addressee;
+        this.subject = builder.subject;
+        this.body = builder.body;
     }
 
-    public static String getSUBJECT() {
-        return SUBJECT;
+    public String getAddressee() {
+        return addressee;
     }
 
-    public static String getBODY() {
-        return BODY;
+    public String getSubject() {
+        return subject;
     }
+
+    public String getBody() {
+        return body;
+    }
+
+    public static class EmailContentBuilder {
+        private final String addressee;
+        private final String subject;
+        private String body;
+
+        public EmailContentBuilder(String addressee, String subject) {
+            this.addressee = addressee;
+            this.subject = subject;
+        }
+
+        public EmailContentBuilder body(String body) {
+            this.body = body;
+            return this;
+        }
+
+        public EmailContent build() {
+            return new EmailContent(this);
+        }
+    }
+
+
 }

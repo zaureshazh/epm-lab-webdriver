@@ -1,6 +1,7 @@
 package page;
 
 import business_objects.EmailContent;
+import business_objects.TestEmailContent;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -12,6 +13,7 @@ import util.WaitUtil;
 public class YandexMailBoxPF {
     private static int WAIT_TIMEOUT = 10;
     private WebDriver driver;
+    private EmailContent emailContent = new TestEmailContent().buildEmailContent();
 
     @FindBy(xpath = "//a[@href='#compose']")
     private WebElement composeButton;
@@ -70,9 +72,9 @@ public class YandexMailBoxPF {
         WaitUtil.waitForElementToBeVisible(composeButton, WAIT_TIMEOUT);
         composeButton.click();
         WaitUtil.waitForElementToBeVisible(addresseeField, WAIT_TIMEOUT);
-        addresseeField.sendKeys(EmailContent.getADDRESSEE());
-        subjectField.sendKeys(EmailContent.getSUBJECT());
-        bodyField.sendKeys(EmailContent.getBODY());
+        addresseeField.sendKeys(emailContent.getAddressee());
+        subjectField.sendKeys(emailContent.getSubject());
+        bodyField.sendKeys(emailContent.getBody());
         ((JavascriptExecutor) driver).executeScript("arguments[0].click();", closeEmailButton);
         return this;
     }
@@ -81,7 +83,7 @@ public class YandexMailBoxPF {
         WaitUtil.waitForElementToBeVisible(draftsFolder, WAIT_TIMEOUT);
         draftsFolder.click();
         WaitUtil.waitForElementToBeVisible(firstDraft, WAIT_TIMEOUT);
-        return addressee.getText().equals(EmailContent.getADDRESSEE()) && subject.getText().equals(EmailContent.getSUBJECT()) && body.getText().equals(EmailContent.getBODY());
+        return addressee.getText().equals(emailContent.getAddressee()) && subject.getText().equals(emailContent.getSubject()) && body.getText().equals(emailContent.getBody());
     }
 
     public YandexMailBoxPF sendDraft() {
@@ -96,7 +98,7 @@ public class YandexMailBoxPF {
         WaitUtil.waitForElementToBeVisible(sentFolder, WAIT_TIMEOUT);
         sentFolder.click();
         WaitUtil.waitForElementToBeVisible(addressee, WAIT_TIMEOUT);
-        return addressee.getText().equals(EmailContent.getADDRESSEE()) && subject.getText().equals(EmailContent.getSUBJECT()) && body.getText().equals(EmailContent.getBODY());
+        return addressee.getText().equals(emailContent.getAddressee()) && subject.getText().equals(emailContent.getSubject()) && body.getText().equals(emailContent.getBody());
     }
 
     public YandexMailBoxPF moveToTrash() {
