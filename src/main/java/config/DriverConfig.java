@@ -23,7 +23,7 @@ public class DriverConfig {
     }
 
     private static WebDriver init() {
-        System.setProperty("webdriver.chrome.driver", "C:\\data\\chromedriver_92.0.4515.43\\chromedriver.exe");
+        System.setProperty("webdriver.chrome.driver", "src/main/resources/chromedriver.exe");
         driver = new ChromeDriver();
 
 //        try {

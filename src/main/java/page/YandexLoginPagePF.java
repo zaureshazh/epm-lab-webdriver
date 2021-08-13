@@ -61,7 +61,9 @@ public class YandexLoginPagePF {
     }
 
     public YandexMailBoxPF openMailBox() {
+        WaitUtil.waitForElementToBeVisible(accountMenu, WAIT_TIMEOUT);
         accountMenu.click();
+        WaitUtil.waitForElementToBeVisible(mailOption, WAIT_TIMEOUT);
         mailOption.click();
         return new YandexMailBoxPF(driver);
     }
