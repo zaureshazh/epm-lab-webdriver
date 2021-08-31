@@ -34,6 +34,9 @@ public class YandexLoginPagePF {
     @FindBy(className = "menu__text")
     private WebElement mailOption;
 
+    @FindBy(xpath = "//h1[@class='passp-title ']")
+    private WebElement loginStep;
+
     public YandexLoginPagePF(WebDriver driver) {
         this.driver = driver;
         PageFactory.initElements(driver, this);
@@ -44,14 +47,27 @@ public class YandexLoginPagePF {
         return this;
     }
 
-    public YandexLoginPagePF login() {
+    public YandexLoginPagePF enterEmail() {
         WaitUtil.waitForElementToBeVisible(loginField, WAIT_TIMEOUT);
         loginField.sendKeys(User.getLogin());
         loginButton.click();
+        return this;
+    }
+
+    public YandexLoginPagePF enterPassword() {
         WaitUtil.waitForElementToBeVisible(passwordField, WAIT_TIMEOUT);
         new Actions(driver).sendKeys(passwordField, User.getPassword()).build().perform();
         loginButton.click();
-        return new YandexLoginPagePF(driver);
+        return this;
+    }
+
+    public YandexLoginPagePF login() {
+        WaitUtil.waitForElementToBeVisible(loginStep, WAIT_TIMEOUT);
+        if (loginStep.getText().equals("Log in with Yandex ID")) {
+            enterEmail();
+        }
+        enterPassword();
+        return this;
     }
 
     public boolean checkIfLoggedIn() {

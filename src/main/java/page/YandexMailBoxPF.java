@@ -68,6 +68,11 @@ public class YandexMailBoxPF {
         PageFactory.initElements(driver, this);
     }
 
+    public boolean checkEmailPageIsOpen() {
+        WaitUtil.waitForElementToBeVisible(composeButton, WAIT_TIMEOUT);
+        return composeButton.isDisplayed();
+    }
+
     public YandexMailBoxPF composeEmail() {
         WaitUtil.waitForElementToBeVisible(composeButton, WAIT_TIMEOUT);
         composeButton.click();

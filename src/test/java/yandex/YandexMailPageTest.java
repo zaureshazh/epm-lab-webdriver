@@ -5,7 +5,7 @@ import org.testng.annotations.*;
 import page.YandexLoginPagePF;
 import page.YandexMailBoxPF;
 
-public class YandexMailPageTest extends BaseYandexTest {
+public class YandexMailPageTest extends BaseYandexTest{
     private YandexLoginPagePF yandexLoginPagePF;
     private YandexMailBoxPF yandexMailBoxPF;
 
