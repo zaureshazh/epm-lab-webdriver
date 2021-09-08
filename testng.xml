@@ -8,6 +8,9 @@
             <package name="yandex" />
         </packages>
     </test> -->
+    <listeners>
+        <listener class-name="util.TestListener"/>
+    </listeners>
     <test name="GithubTestViaCucumberAndTestNG">
         <classes>
             <class name="yandex.YandexMailPageCucumberTestNGTest"/>

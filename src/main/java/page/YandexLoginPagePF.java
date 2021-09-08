@@ -6,6 +6,8 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
+import reporting.LoggerUtil;
+import reporting.ReportUtil;
 import util.WaitUtil;
 
 public class YandexLoginPagePF {
@@ -43,26 +45,34 @@ public class YandexLoginPagePF {
     }
 
     public YandexLoginPagePF openPage() {
+        LoggerUtil.info("Going to URL: " + HOMEPAGE_URL);
         driver.get(HOMEPAGE_URL);
         return this;
     }
 
     public YandexLoginPagePF enterEmail() {
         WaitUtil.waitForElementToBeVisible(loginField, WAIT_TIMEOUT);
+        LoggerUtil.info("Entering username");
+        ReportUtil.highlightElement(loginField, driver);
         loginField.sendKeys(User.getLogin());
+        ReportUtil.unhighlightElement(loginField, driver);
         loginButton.click();
         return this;
     }
 
     public YandexLoginPagePF enterPassword() {
         WaitUtil.waitForElementToBeVisible(passwordField, WAIT_TIMEOUT);
+        LoggerUtil.info("Entering password");
+        ReportUtil.highlightElement(passwordField, driver);
         new Actions(driver).sendKeys(passwordField, User.getPassword()).build().perform();
+        ReportUtil.unhighlightElement(passwordField, driver);
         loginButton.click();
         return this;
     }
 
     public YandexLoginPagePF login() {
         WaitUtil.waitForElementToBeVisible(loginStep, WAIT_TIMEOUT);
+        LoggerUtil.info("Logging in to Yandex");
         if (loginStep.getText().equals("Log in with Yandex ID")) {
             enterEmail();
         }
@@ -71,6 +81,7 @@ public class YandexLoginPagePF {
     }
 
     public boolean checkIfLoggedIn() {
+        LoggerUtil.info("Checking if logged in");
         WaitUtil.waitForElementToBeVisible(name, WAIT_TIMEOUT);
         WaitUtil.waitForElementToBeVisible(surname, WAIT_TIMEOUT);
         return name.isDisplayed() && surname.isDisplayed();
@@ -78,9 +89,14 @@ public class YandexLoginPagePF {
 
     public YandexMailBoxPF openMailBox() {
         WaitUtil.waitForElementToBeVisible(accountMenu, WAIT_TIMEOUT);
+        LoggerUtil.info("Opening Mailbox");
+        ReportUtil.highlightElement(accountMenu, driver);
         accountMenu.click();
+        ReportUtil.unhighlightElement(accountMenu, driver);
         WaitUtil.waitForElementToBeVisible(mailOption, WAIT_TIMEOUT);
+        ReportUtil.highlightElement(mailOption, driver);
         mailOption.click();
+        ReportUtil.unhighlightElement(mailOption, driver);
         return new YandexMailBoxPF(driver);
     }
 

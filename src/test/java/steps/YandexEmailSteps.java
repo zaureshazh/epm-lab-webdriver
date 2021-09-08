@@ -6,7 +6,6 @@ import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
 import org.openqa.selenium.WebDriver;
 import org.testng.Assert;
-import page.YandexLoginPagePF;
 import page.YandexMailBoxPF;
 
 public class YandexEmailSteps {

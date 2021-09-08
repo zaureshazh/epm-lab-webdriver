@@ -8,6 +8,8 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
+import reporting.LoggerUtil;
+import reporting.ReportUtil;
 import util.WaitUtil;
 
 public class YandexMailBoxPF {
@@ -69,55 +71,85 @@ public class YandexMailBoxPF {
     }
 
     public boolean checkEmailPageIsOpen() {
+        LoggerUtil.info("Checking if Mailbox is open");
         WaitUtil.waitForElementToBeVisible(composeButton, WAIT_TIMEOUT);
         return composeButton.isDisplayed();
     }
 
     public YandexMailBoxPF composeEmail() {
         WaitUtil.waitForElementToBeVisible(composeButton, WAIT_TIMEOUT);
+        LoggerUtil.info("Composing new email");
+        ReportUtil.highlightElement(composeButton, driver);
         composeButton.click();
+        ReportUtil.unhighlightElement(composeButton, driver);
         WaitUtil.waitForElementToBeVisible(addresseeField, WAIT_TIMEOUT);
+        LoggerUtil.info("Filling up email addressee");
+        ReportUtil.highlightElement(addresseeField, driver);
         addresseeField.sendKeys(emailContent.getAddressee());
+        ReportUtil.unhighlightElement(addresseeField, driver);
+        LoggerUtil.info("Filling up email subject");
+        ReportUtil.highlightElement(subjectField, driver);
         subjectField.sendKeys(emailContent.getSubject());
+        ReportUtil.unhighlightElement(subjectField, driver);
+        LoggerUtil.info("Filling up email body");
+        ReportUtil.highlightElement(bodyField, driver);
         bodyField.sendKeys(emailContent.getBody());
+        ReportUtil.unhighlightElement(bodyField, driver);
         ((JavascriptExecutor) driver).executeScript("arguments[0].click();", closeEmailButton);
         return this;
     }
 
     public boolean checkDraft() {
         WaitUtil.waitForElementToBeVisible(draftsFolder, WAIT_TIMEOUT);
+        LoggerUtil.info("Checking email is in Draft folder");
+        ReportUtil.highlightElement(draftsFolder, driver);
         draftsFolder.click();
+        ReportUtil.unhighlightElement(draftsFolder, driver);
         WaitUtil.waitForElementToBeVisible(firstDraft, WAIT_TIMEOUT);
         return addressee.getText().equals(emailContent.getAddressee()) && subject.getText().equals(emailContent.getSubject()) && body.getText().equals(emailContent.getBody());
     }
 
     public YandexMailBoxPF sendDraft() {
         WaitUtil.waitForElementToBeVisible(firstDraft, WAIT_TIMEOUT);
+        LoggerUtil.info("Sending email");
+        ReportUtil.highlightElement(firstDraft, driver);
         firstDraft.click();
+        ReportUtil.unhighlightElement(firstDraft, driver);
         WaitUtil.waitForElementToBeVisible(sendEmailButton, WAIT_TIMEOUT);
+        ReportUtil.highlightElement(sendEmailButton, driver);
         sendEmailButton.click();
+        ReportUtil.unhighlightElement(sendEmailButton, driver);
         return this;
     }
 
     public boolean checkSent() {
         WaitUtil.waitForElementToBeVisible(sentFolder, WAIT_TIMEOUT);
+        LoggerUtil.info("Checking email is sent");
+        ReportUtil.highlightElement(sentFolder, driver);
         sentFolder.click();
+        ReportUtil.unhighlightElement(sentFolder, driver);
         WaitUtil.waitForElementToBeVisible(addressee, WAIT_TIMEOUT);
         return addressee.getText().equals(emailContent.getAddressee()) && subject.getText().equals(emailContent.getSubject()) && body.getText().equals(emailContent.getBody());
     }
 
     public YandexMailBoxPF moveToTrash() {
-        ((JavascriptExecutor)driver).executeScript("history.go(0)");
+        LoggerUtil.info("Refreshing the page");
+        ((JavascriptExecutor) driver).executeScript("history.go(0)");
         WaitUtil.waitForElementToBeVisible(email, WAIT_TIMEOUT);
         WaitUtil.waitForElementToBeVisible(trashFolder, WAIT_TIMEOUT);
+        LoggerUtil.info("Moving email Trash folder");
         new Actions(driver).dragAndDrop(email, trashFolder).build().perform();
         return this;
     }
 
     public void logout() {
+        LoggerUtil.info("Logging out");
         WaitUtil.waitForElementToBeVisible(userMenu, WAIT_TIMEOUT);
+        ReportUtil.highlightElement(userMenu, driver);
         userMenu.click();
+        ReportUtil.unhighlightElement(userMenu, driver);
         WaitUtil.waitForElementToBeVisible(logoutOption, WAIT_TIMEOUT);
+        ReportUtil.highlightElement(logoutOption, driver);
         logoutOption.click();
     }
 }
